@@ -6,49 +6,51 @@ db.on("error", function(error) {
     console.log("Getting an error : ", error);
 }); 
 
-const queryGetDB = (query) =>{
-    return new Promise((resolve,reject) =>{
-        db.all(query, (err,rows) => {
-            try {
-                if (err) {reject(err)}
-                if (rows){resolve(rows)}
-                else{resolve(null)}
-            } catch (error) {
-                resolve(null)
-            }
-        })
-    })
-}
+/**
+ * DB GET: Params (TABLE, PROPERTY, VALUE)
+ */
+const dbGet = async(table,property,value) => {
+    let myQuery = `SELECT * FROM ${table}`
+    myQuery += value ?  ` WHERE ${property} = '${value}'` : ''
+    return await dbRun(myQuery)
+},
 
-const getLocalList = async() =>{
+/**
+ * DB Insert: Params (TABLE, COLUMNS, VALUES)
+ */
+dbInsert = async(table,columns,values) =>  {
     let 
-    myQuery = 'select id,title,ticker from fondo',
-    funds = await queryGetDB(myQuery)
-    return funds
+    tmp_values = values.split(',').map((value) => `"${value}"`).toString(),
+    tmp_columns = columns.split(',').map((col) => `"${col}"`).toString(),
+    myQuery = `INSERT INTO ${table} (${tmp_columns}) VALUES (${tmp_values})`
+    return await dbRun(myQuery)
 },
 
-getDBFundHeader = async(ticker) => {
-    let myQuery = `SELECT * FROM fondo WHERE ticker = '${ticker}'`
-    let fundHeader = await queryGetDB(myQuery)
-    return fundHeader ? fundHeader[0] : null
+/**
+ * DB Delete: Params (TABLE, COLUMN, VALUE)
+ */
+dbDelete = async(table,property, value) => {
+    let
+    myQuery = `DELETE FROM ${table} WHERE ${property} = '${value}'`
+    return await dbRun(myQuery)
 },
 
-getFundHeader = async(ticker) =>{
-    let fondo = await getDBFundHeader(ticker)
-    if (!fondo){
-        fondo = await scraper.obtenerCabecera(ticker)
-        fondo.perfil = await getFoundID('perfil','nombre',fondo.perfil)
-        fondo.foco = await getFoundID('foco','nombre',fondo.foco)
-        fondo.familia = await getFoundID('familia','nombre',fondo.familia)
-        fondo.estrategia = await getFoundID('estrategia','nombre',fondo.estrategia)
-        fondo.horizonte = await getFoundID('horizonte','nombre',fondo.horizonte)
-        await guardarCabeceraFondo(fondo)
-        fondo = await getDBFundHeader(ticker)
-    }    
-    return fondo
+// dbRun: Run Query
+dbRun = async(query) => {
+    const resultQuery = await new Promise(resolve => {
+        db.all(query, (err,rows) => {
+          if (err) {
+            resolve({status: "error", message: err.message});
+          }
+          resolve({status: "success", data: rows});
+        });
+      });
+    return resultQuery
 }
 
 module.exports = {
-    getLocalList,
-    getFundHeader
+    dbGet,
+    dbInsert,
+    dbDelete,
+    dbRun
 }

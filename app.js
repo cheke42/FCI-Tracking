@@ -1,11 +1,12 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-
-var app = express();
+const 
+express = require('express'),
+bodyParser = require('body-parser'),
+app = express(),
 
 // Carga de archivo de rutas
-var song_routes = require('./routes/song');
-var fund_routes = require('./routes/fund')
+fund_routes = require('./routes/fund')
+wallet_routes = require('./routes/wallet')
+
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
@@ -18,7 +19,7 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use('/api', song_routes);
 app.use('/api/fund',fund_routes)
+app.use('/api/wallet',wallet_routes)
 
 module.exports = app;

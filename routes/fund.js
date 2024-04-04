@@ -1,13 +1,10 @@
-// Cargamos Express
-var express = require('express');
+const 
+express = require('express'), // Load express
+FundController = require('../controllers/fund'), // Load Controller
+api = express.Router(); // Express Router
 
-// Cargamos el controlador para Canción
-var FundController = require('../controllers/fund');
-
-var api = express.Router();
-
-api.get('/header/:ticker',FundController.getHeader)
-api.get('/localList', FundController.localList);
+// Routes:
+api.get('/:ticker?', FundController.get)
 
 
 module.exports = api;
