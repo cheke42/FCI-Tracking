@@ -5,7 +5,7 @@ var app = express();
 
 // Carga de archivo de rutas
 var song_routes = require('./routes/song');
-
+var fund_routes = require('./routes/fund')
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
@@ -19,5 +19,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/api', song_routes);
+app.use('/api',fund_routes)
 
 module.exports = app;
