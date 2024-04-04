@@ -19,6 +19,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/api', song_routes);
-app.use('/api',fund_routes)
+app.use('/api/fund',fund_routes)
 
 module.exports = app;

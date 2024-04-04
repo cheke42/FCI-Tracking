@@ -6,6 +6,8 @@ var FundController = require('../controllers/fund');
 
 var api = express.Router();
 
-api.get('/fund', FundController.getFund);
+api.get('/header/:ticker',FundController.getHeader)
+api.get('/localList', FundController.localList);
+
 
 module.exports = api;
