@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "my first api with nodejs",
   "main": "index.js",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "keywords": [
     "node",
