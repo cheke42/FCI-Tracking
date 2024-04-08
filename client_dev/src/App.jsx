@@ -1,19 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter,Routes,Route } from "react-router-dom"
+import { MenuBar } from './components/menu/MenuBar'
+import { Login } from './components/log/Login'
+import { useState } from 'react'; 
 
 function App() {
+  
+  const [loggedIn, setLoggedIn] = useState(false)
+
+
   return (
     <BrowserRouter>
+      <MenuBar loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
       <Routes>
-        <Route path="/" element={
-          <div className="App">
-            <header className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-                <h1>👨‍💻 Testing Render. If it works for me, I'll buy it 👨‍💻 </h1>
-            </header>
-          </div>
-        }/>
+        <Route path="/login" element={<Login setLoggedIn={setLoggedIn}/>}/>
         <Route path="/test" element={<h1>👾 Bicho</h1>}/>
         <Route path="/test2" element={<h1>🐀 Rata</h1>}/>
       </Routes>
