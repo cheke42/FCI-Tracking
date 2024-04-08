@@ -2,6 +2,7 @@ const
 express = require('express'),
 bodyParser = require('body-parser'),
 app = express(),
+path = require('path')
 
 // Carga de archivo de rutas
 fund_routes = require('./routes/fund'),
@@ -24,7 +25,8 @@ app.use('/api/fund',fund_routes)
 app.use('/api/wallet',wallet_routes)
 app.use('/api/user',user_routes)
 
-app.get('/', (req,resp) => resp.status(200).send("<h1>👨‍💻 Testing Render. If it works for me, I'll buy it 👨‍💻 </h1>"))
+
+app.use(express.static(path.join(__dirname,'client')))
 
 
 module.exports = app;
