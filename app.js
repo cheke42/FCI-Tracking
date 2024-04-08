@@ -4,8 +4,9 @@ bodyParser = require('body-parser'),
 app = express(),
 
 // Carga de archivo de rutas
-fund_routes = require('./routes/fund')
-wallet_routes = require('./routes/wallet')
+fund_routes = require('./routes/fund'),
+wallet_routes = require('./routes/wallet'),
+user_routes = require('./routes/user')
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
@@ -21,5 +22,9 @@ app.use((req, res, next) => {
 
 app.use('/api/fund',fund_routes)
 app.use('/api/wallet',wallet_routes)
+app.use('/api/user',user_routes)
+
+app.get('/', (req,resp) => resp.status(200).send("<h1>👨‍💻 Testing Render. If it works for me, I'll buy it 👨‍💻 </h1>"))
+
 
 module.exports = app;
