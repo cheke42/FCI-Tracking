@@ -12,6 +12,7 @@ getDetails = async(id_wallet) => {
     return await db_util.dbRun(myQuery)
 },
 
+// 
 getDailyPerfomance = async(id_wallet,fecha) => {
     let myQuery = `SELECT * FROM( 
         SELECT fecha,ticker,precio FROM (SELECT a.* FROM ultima_analitica as ua inner join analitica as a WHERE ua.ticker = a.ticker and a.fecha < ${fecha} order by ticker,a.fecha desc) as af group by af.ticker) as au inner join billetera_fondo as bf on au.ticker = bf.ticker
