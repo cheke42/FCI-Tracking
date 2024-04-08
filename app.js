@@ -24,9 +24,14 @@ app.use((req, res, next) => {
 app.use('/api/fund',fund_routes)
 app.use('/api/wallet',wallet_routes)
 app.use('/api/user',user_routes)
+app.get('/prueba',(req,res) => res.status(200).send("<h1>✅✅✅ Everything OK! ✅✅✅</h1>"))
+
+// Static route to show the "react" build in "client" folder
+app.use('/',express.static('client',{redirect: false}))
+// React router
+app.get('*',(req,res,next) => res.sendFile('client/index.html',{root: __dirname}))
 
 
-app.use(express.static(path.join(__dirname,'client')))
 
 
 module.exports = app;
