@@ -8,10 +8,9 @@ var moment = require('moment');
 var secret = 'clave_prueba';
 
 // Exportamos la funcionalidad de creación de tokens.
-exports.createToken = function(username,pwd){
+exports.createToken = function(username){
 	var payload = {
 		username: username,
-        pwd: pwd,
 		iat: moment().unix(),
 		exp: moment().add(30, 'days').unix
 	};

@@ -9,10 +9,11 @@ login = async(username,pwd) => {
     enc_pwd = encrypPassword(pwd)
     myQuery = `SELECT * FROM usuario where username = '${username}' and password = '${enc_pwd}'`,
     user = await db_util.dbRun(myQuery)
+    console.log(user.data.username)
     resp = {}
     resp.status = user.data.length === 0 ? user.status = 'error' : user.status = 'success'
     if (resp.status == 'success'){
-        resp.token = jwt.createToken(user,enc_pwd)
+        resp.token = jwt.createToken(username)
     }
     return resp
 },    

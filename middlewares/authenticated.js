@@ -8,19 +8,19 @@ var secret = 'clave_prueba';
 
 // Exportamos la funcionalidad para asegurar la Autenticación
 exports.ensureAuth = function(req, res, next){
-    if(!req.headers.authorization){
-		return res.status(403).send({message: 'La petición no tiene la cabecera de autenticación'});
-	}
-	var token = req.headers.authorization.replace(/['"]+/g, '');
-	try{
-		var payload = jwt.decode(token, secret);
-		if(payload.exp <= moment().unix()){
-			return res.status(401).send({message: 'Token has expired'});
+	if(process.env.DEV_STATUS != 'develompent'){
+		let 
+		token = req.cookies.token
+		console.log(process.env.DEV_STATUS)
+		try{
+			let payload = jwt.decode(token, secret);
+			console.log(payload)
+			if(payload.exp <= moment().unix()){
+				return res.status(401).send({message: 'Token has expired'});
+			}
+		}catch(ex){
+			return res.status(404).send({message: 'Invalid Token'});
 		}
-	}catch(ex){
-		//console.log(ex);
-		return res.status(404).send({message: 'Invalid Token'});
 	}
-	req.user = payload.username.data[0]
 	next();
 };

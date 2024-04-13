@@ -2,7 +2,8 @@ const
 express = require('express'),
 bodyParser = require('body-parser'),
 app = express(),
-path = require('path')
+path = require('path'),
+cookieParser = require("cookie-parser"),
 
 // Carga de archivo de rutas
 fund_routes = require('./routes/fund'),
@@ -11,7 +12,7 @@ user_routes = require('./routes/user')
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-
+app.use(cookieParser());
 // Configuración de cabeceras HTTP (Para evitar problemas de CORS)
 app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Origin', '*');

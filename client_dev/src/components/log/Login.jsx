@@ -2,16 +2,19 @@ import { useState } from 'react';
 import {Container,Row,Col,Form,InputGroup,Button } from 'react-bootstrap';
 import { FaUserAstronaut,FaSignInAlt,FaEraser } from "react-icons/fa";
 import { MdOutlinePassword } from "react-icons/md";
-import  { useNavigate } from 'react-router-dom'
+import  { useNavigate } from 'react-router-dom';
+import { helpHttp } from '../../helper/helpHttp';
 
 export function Login({setLoggedIn}){
     
     // States
     const
-    [username,setUsername] = useState(''),
-    [password,setPassword] = useState(''),
+    [username,setUsername] = useState('admin'),
+    [password,setPassword] = useState('35889344a'),
     [btnDisabled,setBtnDisabled] = useState(false),
     [btnLoginTxt,setBtnLoginTxt] = useState('Ingresar'),
+    api = helpHttp,
+    loginURL = `http://localhost:10000/api/user/login`,
     navigate = useNavigate(),
 
     // Event Handlers
@@ -22,12 +25,27 @@ export function Login({setLoggedIn}){
         setUsername('')
         setPassword('')
     },
-    handleLogin = (ev) => {
+    handleLogin = async(ev) => {
         setBtnLoginTxt('Ingresando...')
         setBtnDisabled(true)
+        console.log('a')
+        let resp = await fetch(loginURL,{
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        })
+        const ddd = await resp.json()
+        console.log('b')
+        console.log(ddd)
         setTimeout(() => {
             setLoggedIn(true);
-            navigate(`/`, { replace: true });
+            navigate(`/panel`, { replace: true });
             //return <Redirect to='/'  />
         }, 1000);
     },
@@ -49,7 +67,7 @@ export function Login({setLoggedIn}){
 
     return (
         <Container>
-            <h1 className='text-center mt-4'>Ingreso al sistema</h1>
+            <h1 className='text-center mt-4'>Ingreso al sistema .</h1>
             <Row >
                 <Col />
                 <Col xxl={6} lg={9} sm={12} >
