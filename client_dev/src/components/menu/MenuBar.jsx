@@ -6,20 +6,21 @@ import  { useNavigate } from 'react-router-dom'
 
 
 export function MenuBar({loggedIn, setLoggedIn}){
-    
+    //-> VARIBLES
     const 
+    navigate = useNavigate(),
+    
+    //-> HANDLERS
     handlerLogOut = (e) =>{
         setLoggedIn(false)
-        setTimeout(() => {
-            navigate(`/login`, { replace: true });
-        }, 1000);
-    },
-    navigate = useNavigate()
+        navigate(`/login`, { replace: true });
+    }
+    
     
     return (
         <Navbar bg="dark" data-bs-theme="dark">
             <Container>
-                <Navbar.Brand href="#home">
+                <Navbar.Brand href="panel">
                     <div className={menuBarStyle.wrapper}>
                         <svg className={menuBarStyle.svg}>
                             <text x="0%" y="75%" className={menuBarStyle.text}>📈 BULLTRACKING</text>

@@ -9,9 +9,8 @@ login = async (req,res) => {
 	username = params.username,
 	password = params.password,
     response = await userModel.login(username,password)
-	console.log(`${username} - ${password}`)
 	//res.status(200).send(response)
-	res.cookie("token",response.token,{path: "/api/wallet",httpOnly: true}).send({msg: "ok"})
+	res.cookie("token",response.token,{httpOnly: true}).send(response)
 	// solution: https://www.youtube.com/watch?v=c_f2o5dZl8A
 },
 
