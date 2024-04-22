@@ -20,10 +20,18 @@ getDailyPerfomance = async (req,res) => {
 	fecha = req.params.fecha
     wallet = await walletModel.getDailyPerfomance(id_wallet,fecha)
 	res.status(200).send(wallet)
+},
+
+getDateByDate = async(req,res) => {
+    let id = req.params.id
+    let fecha = req.params.fecha
+    walletDetail = await walletModel.getWalletDatailByDate(id,fecha)
+    res.status(200).send(walletDetail)
 }
 
 module.exports = {
 	get,
     getDetails,
-	getDailyPerfomance
+	getDailyPerfomance,
+	getDateByDate
 }

@@ -5,11 +5,11 @@ import { MdOutlinePassword } from "react-icons/md";
 import  { useNavigate } from 'react-router-dom';
 import {_fetch} from '../helper/httpClient'
 
-export function Login({setLoggedIn}){
+export function Login({setLoggedIn,setUserLoggedIn}){
     
     //-> VARIBLES
     const 
-    loginURL = `http://localhost:10000/api/user/login`,
+    loginEndpoint = `user/login`,
     navigate = useNavigate(),
 
     //-> STATES
@@ -29,10 +29,11 @@ export function Login({setLoggedIn}){
     },
     handlerLogin = async(ev) => {
         setBtnDisabled(true)
-        const response = await _fetch(loginURL,'POST',{username,password})
+        const response = await _fetch(loginEndpoint,'POST',{username,password})
         if (response && response.status === 'success'){
             setShowError(false)
             setLoggedIn(true);
+            setUserLoggedIn(username)
             navigate(`/panel`, { replace: true });
         }else{
             setShowError(true)
@@ -51,6 +52,8 @@ export function Login({setLoggedIn}){
                 break;
         }
     }
+
+    
 
     return (
         <Container>

@@ -8,7 +8,9 @@ get = async(id_wallet) => {
 
 // Get Details
 getDetails = async(id_wallet) => {
-    let myQuery = `SELECT * FROM billetera_fondo WHERE id_billetera = '${id_wallet}'`
+    let myQuery = `select b.id, b.nombre, bf.cantidad,f.ticker, f.title,ua.precio, ua.fecha as "ultima_actualizacion"
+    from billetera_fondo as bf inner join fondo as f on bf.ticker = f.ticker inner join billetera as b on bf.id_billetera = b.id inner join ultima_analitica as ua on f.ticker = ua.ticker
+    where b.id = ${id_wallet}`
     return await db_util.dbRun(myQuery)
 },
 
@@ -24,10 +26,19 @@ getDailyPerfomance = async(id_wallet,fecha) => {
     res_data.data.cant = result.data.length
     res_data.data.total = result.data.reduce((partial,fund) => partial + (fund.cantidad * fund.precio),0).toFixed(2)
     return res_data
+},
+
+getWalletDatailByDate = async(id,fecha)=> {
+    let myQuery = `select * from(
+        select fecha,ticker,precio from (select a.* from ultima_analitica as ua inner join analitica as a where ua.ticker = a.ticker and a.fecha < ${fecha} order by ticker,a.fecha desc) as af group by af.ticker) as au inner join billetera_fondo as bf on au.ticker = bf.ticker
+        where id_billetera = ${id}`
+    return await db_util.dbRun(myQuery)
 }
+
 
 module.exports = {
     get,
     getDetails,
-    getDailyPerfomance
+    getDailyPerfomance,
+    getWalletDatailByDate
 }
