@@ -10,7 +10,7 @@ get = async(id_wallet) => {
 getDetails = async(id_wallet) => {
     let myQuery = `select b.id, b.nombre, bf.cantidad,f.ticker, f.title,ua.precio, ua.fecha as "ultima_actualizacion"
     from billetera_fondo as bf inner join fondo as f on bf.ticker = f.ticker inner join billetera as b on bf.id_billetera = b.id inner join ultima_analitica as ua on f.ticker = ua.ticker
-    where b.id = ${id_wallet}`
+    where b.id = ${id_wallet} order by f.ticker`
     return await db_util.dbRun(myQuery)
 },
 
@@ -33,12 +33,32 @@ getWalletDatailByDate = async(id,fecha)=> {
         select fecha,ticker,precio from (select a.* from ultima_analitica as ua inner join analitica as a where ua.ticker = a.ticker and a.fecha < ${fecha} order by ticker,a.fecha desc) as af group by af.ticker) as au inner join billetera_fondo as bf on au.ticker = bf.ticker
         where id_billetera = ${id}`
     return await db_util.dbRun(myQuery)
+},
+
+getRangeDate = async(id,limit)=> {
+    let
+    dates = await _getLastAnalyticals(limit)
+    historial = []
+    for (d of dates){
+        tmpDetail = await getWalletDatailByDate(id,d)
+        historial.push(tmpDetail.data)
+    }
+    return historial
 }
+
+_getLastAnalyticals = async (limit) => {
+    let 
+    myQuery = `select analitica.fecha from analitica GROUP by fecha order by fecha desc limit ${limit}`,
+    last = (await db_util.dbRun(myQuery)).data
+    last = last ? last.map((l) => l.fecha) : []
+    return last
+},
 
 
 module.exports = {
     get,
     getDetails,
     getDailyPerfomance,
-    getWalletDatailByDate
+    getWalletDatailByDate,
+    getRangeDate
 }

@@ -27,11 +27,19 @@ getDateByDate = async(req,res) => {
     let fecha = req.params.fecha
     walletDetail = await walletModel.getWalletDatailByDate(id,fecha)
     res.status(200).send(walletDetail)
+},
+
+getRangeDate = async(req,res) => {
+    let id = req.params.id
+    let limit = req.params.limit
+    walletDetail = await walletModel.getRangeDate(id,limit)
+    res.status(200).send(walletDetail)
 }
 
 module.exports = {
 	get,
     getDetails,
 	getDailyPerfomance,
-	getDateByDate
+	getDateByDate,
+	getRangeDate
 }

@@ -18,10 +18,17 @@ getAnalytics = async (req,res) =>{
     let day = req.params.day
     let analytics = await fundModel.getRemoteAnalyticals(ticker,year,month,day)
     res.status(200).send(analytics)
+},
+periodicAnalyticalData =  async (req,res) =>{
+    let ticker = req.params.ticker
+    let amount = req.params.amount
+    let analiticas = await fundModel.periodicAnalyticalData(ticker,amount)
+    res.status(200).send(analiticas)
 }
 
 module.exports = {
 	get,
 	getRemoteList,
-	getAnalytics
+	getAnalytics,
+    periodicAnalyticalData
 }

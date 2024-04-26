@@ -52,7 +52,7 @@ export function DetailWalletFooter({walletId}){
                 <div className="ms-2">
                     <div className="fw-bold">Fondos</div>
                     <div className="text-center" style={{minHeight: "3rem"}}>
-                        { tickers.map((t) => ( <div className="d-inline-block"><Badge className="ms-1" bg="secondary">{t}</Badge></div> ))}
+                        { tickers.map((t) => ( <div className="d-inline-block" key={`ticker-${walletId}-${t}`}><Badge className="ms-1" bg="secondary">{t}</Badge></div> ))}
                     </div>
                 </div>
             </ListGroup.Item>
@@ -60,7 +60,7 @@ export function DetailWalletFooter({walletId}){
                 <div className="ms-2">
                     <div className="fw-bold">Saldo</div>
                     <div className="fs-2">${(saldoActual).toLocaleString('es-ES', {maximumFractionDigits:2})}</div>
-                </div>s
+                </div>
                 <Badge bg={rendimientoPositivo ? 'success' : 'danger'} pill>
                         $ {rendimientoPositivo ? '+' : '-'}{(saldoActual-saldoAnterior).toLocaleString('es-ES', {maximumFractionDigits:2})} 
                         { rendimientoPositivo ?  <FaArrowTrendUp />:  <FaArrowTrendDown />}

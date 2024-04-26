@@ -29,7 +29,7 @@ export function WalletsList(){
             <Row>
                 <h1 className="text-center mt-3 mb-5">Billeteras</h1>
                 {!isLoading && walletList.map((wallet) => (
-                    <Col>
+                    <Col key={`col-wallet-${wallet.id}`}>
                         <Card className="mt-2 bg-light" key={`wallet-${wallet.id}`}>
                             <Card.Body >
                                 <Card.Title className="fs-1 text-center">{wallet.nombre}</Card.Title>

@@ -8,5 +8,6 @@ api = express.Router(); // Express Router
 api.get('/:ticker?', md_auth.ensureAuth, FundController.get)
 api.get('/remote/list',FundController.getRemoteList)
 api.get('/remote/analytics/:ticker/:year?/:month?/:day?',FundController.getAnalytics)
+api.get('/periodicAnalyticalData/:ticker/:amount',FundController.periodicAnalyticalData)
 
 module.exports = api;

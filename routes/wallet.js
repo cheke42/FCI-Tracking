@@ -15,5 +15,6 @@ api.get('/:id_wallet?', md_auth.ensureAuth, WalletController.get)
 api.get('/detail/:id_wallet?', md_auth.ensureAuth, WalletController.getDetails)
 api.get('/daily_perfomance/:id_wallet/:fecha', md_auth.ensureAuth, WalletController.getDailyPerfomance)
 api.get('/previous_detail/:id/:fecha',WalletController.getDateByDate)
+api.get('/detail_between/:id/:limit',WalletController.getRangeDate)
 
 module.exports = api;

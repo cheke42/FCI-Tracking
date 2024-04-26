@@ -60,10 +60,20 @@ _filterNew = async(ticker,analyticals) => {
     analyticals = analyticals.filter(a => !localAnalyticals.includes(a.fecha))
     return analyticals
 },
+periodicAnalyticalData = async(ticker,amount) =>{
+    /*analiticas = await db_util.periodicAnaliticalData(ticker,cantidad)
+    return analiticas*/
+    let 
+    myQuery = `SELECT * FROM analitica WHERE ticker = '${ticker}'  ORDER BY fecha DESC LIMIT '${amount}'`,
+    funds = db_util.dbRun(myQuery)
+    return funds
+}
+
 
 module.exports = {
     get,
     getRemoteList,
-    getRemoteAnalyticals
+    getRemoteAnalyticals,
+    periodicAnalyticalData
 }
 
