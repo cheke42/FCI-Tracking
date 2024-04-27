@@ -9,36 +9,40 @@ import { FaArrowAltCircleRight } from "react-icons/fa";
 
 export function DetailWalletFooter({walletId}){
 
+    //-> CONST && VAR
+    const 
+    currentWalletURL = 'wallet/detail/',
+    lastWalletURL = 'wallet/previous_detail/'
+    
+    //-> STATES
     const 
     [billeteraActual, setBilleteraActual] = useState([]),
     [saldoActual, setSaldoActual] = useState(0),
     [saldoAnterior, setSaldoAnterior] = useState(0),
     [rendimientoPositivo, setRendimientoPositivo] = useState(false),
-    [tickers, setTickers] = useState([]),
-    currentWalletURL = 'wallet/detail/',
-    lastWalletURL = 'wallet/previous_detail/',
-
-    asyncGetCurrentWallet = async() =>{
-        let 
-        resBillteraActual = (await _fetch(currentWalletURL+walletId)).data,
-        urlBilleteraAnterior = `${lastWalletURL}${walletId}/${resBillteraActual[0].ultima_actualizacion}`,
-        resBilleteraAnterior = (await _fetch(urlBilleteraAnterior)).data,
-        saldo_actual = 0,
-        saldo_anterior = 0,
-        list_tickers = []
-        resBillteraActual.forEach((f) => saldo_actual += (f.cantidad * f.precio))
-        resBilleteraAnterior.forEach((f) => saldo_anterior += (f.cantidad * f.precio))
-        list_tickers = resBillteraActual.map((t) => (t.ticker))
-        setRendimientoPositivo(saldo_actual >= saldo_anterior)
-        setBilleteraActual(resBillteraActual)
-        setSaldoActual(saldo_actual)
-        setTickers(list_tickers)
-        setSaldoAnterior(saldo_anterior)
-    }
-
+    [tickers, setTickers] = useState([])
+    
+    //-> EFFECTS
     useEffect(() =>{
+        const asyncGetCurrentWallet = async() =>{
+            let 
+            resBillteraActual = (await _fetch(currentWalletURL+walletId)).data,
+            urlBilleteraAnterior = `${lastWalletURL}${walletId}/${resBillteraActual[0].ultima_actualizacion}`,
+            resBilleteraAnterior = (await _fetch(urlBilleteraAnterior)).data,
+            saldo_actual = 0,
+            saldo_anterior = 0,
+            list_tickers = []
+            resBillteraActual.forEach((f) => saldo_actual += (f.cantidad * f.precio))
+            resBilleteraAnterior.forEach((f) => saldo_anterior += (f.cantidad * f.precio))
+            list_tickers = resBillteraActual.map((t) => (t.ticker))
+            setRendimientoPositivo(saldo_actual >= saldo_anterior)
+            setBilleteraActual(resBillteraActual)
+            setSaldoActual(saldo_actual)
+            setTickers(list_tickers)
+            setSaldoAnterior(saldo_anterior)
+        }
         asyncGetCurrentWallet()
-    },[])
+    },[walletId])
 
     return (
         <ListGroup key={`wallet-list-group-${walletId}`}>
@@ -48,7 +52,7 @@ export function DetailWalletFooter({walletId}){
                     {billeteraActual.length}
                 </div>
             </ListGroup.Item>
-            <ListGroup.Item as="li" className="d-flex justify-content-between align-items-center"  key={`fund-details-${walletId}`}>
+            <ListGroup.Item as="li" className="d-flex justify-content-between align-items-center" key={`fund-details-${walletId}`}  style={{minHeight: "10rem"}}>
                 <div className="ms-2">
                     <div className="fw-bold">Fondos</div>
                     <div className="text-center" style={{minHeight: "3rem"}}>

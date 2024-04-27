@@ -6,9 +6,9 @@ path = require('path'),
 cookieParser = require("cookie-parser"),
 
 // Carga de archivo de rutas
-fund_routes = require('./routes/fund'),
-wallet_routes = require('./routes/wallet'),
-user_routes = require('./routes/user')
+fund_routes = require('./backend/routes/fund'),
+wallet_routes = require('./backend/routes/wallet'),
+user_routes = require('./backend/routes/user')
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());

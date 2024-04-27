@@ -1,5 +1,5 @@
 sqlite3 = require('sqlite3') // Librería sqlite3
-db = new sqlite3.Database('data/database.db') // SQLITE BD
+db = new sqlite3.Database('backend/data/database.db') // SQLITE BD
 
 
 db.on("error", function(error) {

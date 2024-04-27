@@ -13,8 +13,8 @@ export function Login({setLoggedIn,setUserLoggedIn}){
     navigate = useNavigate(),
 
     //-> STATES
-    [username,setUsername] = useState('admin'),
-    [password,setPassword] = useState('35889344a'),
+    [username,setUsername] = useState(''),
+    [password,setPassword] = useState(''),
     [btnDisabled,setBtnDisabled] = useState(false),
     [showError, setShowError] = useState(false),
 
