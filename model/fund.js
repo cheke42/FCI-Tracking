@@ -67,6 +67,17 @@ periodicAnalyticalData = async(ticker,amount) =>{
     myQuery = `SELECT * FROM analitica WHERE ticker = '${ticker}'  ORDER BY fecha DESC LIMIT '${amount}'`,
     funds = db_util.dbRun(myQuery)
     return funds
+},
+getFundHeader = async(ticker) =>{
+    let myQuery = `SELECT * FROM fondo WHERE ticker = '${ticker}'`
+    let fundHeader = (await db_util.dbRun(myQuery)).data
+    let fondo = fundHeader ? fundHeader[0] : null
+    fondo.perfil = (await db_util.dbGet("perfil","id",fondo.perfil)).data[0].nombre || fondo.perfil
+    fondo.foco = (await db_util.dbGet("foco","id",fondo.foco)).data[0].nombre || fondo.foco
+    fondo.familia = (await db_util.dbGet("familia","id",fondo.familia)).data[0].nombre || fondo.familia
+    fondo.estrategia = (await db_util.dbGet("estrategia","id",fondo.estrategia)).data[0].nombre || fondo.estrategia
+    fondo.horizonte = (await db_util.dbGet("estrategia","id",fondo.horizonte)).data[0].nombre || fondo.horizonte  
+    return {status: "success",data: fondo}
 }
 
 
@@ -74,6 +85,7 @@ module.exports = {
     get,
     getRemoteList,
     getRemoteAnalyticals,
-    periodicAnalyticalData
+    periodicAnalyticalData,
+    getFundHeader
 }
 

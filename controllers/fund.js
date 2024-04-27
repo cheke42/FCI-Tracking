@@ -24,11 +24,20 @@ periodicAnalyticalData =  async (req,res) =>{
     let amount = req.params.amount
     let analiticas = await fundModel.periodicAnalyticalData(ticker,amount)
     res.status(200).send(analiticas)
+},
+getHeader = async (req,res) =>{
+    let 
+    ticker = req.params.ticker,
+    fund = await fundModel.getFundHeader(ticker)
+    res.status(200).send(fund)
 }
+
+
 
 module.exports = {
 	get,
 	getRemoteList,
 	getAnalytics,
-    periodicAnalyticalData
+    periodicAnalyticalData,
+    getHeader
 }

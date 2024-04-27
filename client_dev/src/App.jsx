@@ -5,7 +5,8 @@ import { Login } from './components/Login';
 import { Panel} from './components/Panel';
 import { useState } from 'react'; 
 import { WalletsList } from './components/wallet/WalletsList';
-import { FundsList } from './components/FundsList';
+import { DetailFund } from './components/fund/DetailFund';
+import { FundsList } from './components/fund/FundsList';
 import { DetailWallet } from './components/wallet/DetailWallet'
 
 function App() {
@@ -21,8 +22,9 @@ function App() {
         <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setUserLoggedIn={setUserLoggedIn} loggedIn={loggedIn}/>}/>
         <Route path="/panel" element={<Panel loggedIn={loggedIn} />}/>
         <Route path="/billeteras" element={<WalletsList/>}/>
-        <Route path="billetera/detalle/:id_wallet" element={<DetailWallet/>} />
+        <Route path="/billetera/detalle/:id_wallet" element={<DetailWallet/>} />
         <Route path="/lista-fondos" element={<FundsList/>}/>
+        <Route path="/fondo/detalle/:ticker" element={<DetailFund />}/>
         <Route path="/test2" element={<h1>🐀 Rata</h1>}/>
       </Routes>
     </BrowserRouter>
