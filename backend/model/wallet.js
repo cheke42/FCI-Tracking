@@ -44,9 +44,9 @@ getRangeDate = async(id,limit)=> {
         historial.push(tmpDetail.data)
     }
     return historial
-}
+},
 
-_getLastAnalyticals = async (limit) => {
+_getLastAnalyticals = async(limit) => {
     let 
     myQuery = `select analitica.fecha from analitica GROUP by fecha order by fecha desc limit ${limit}`,
     last = (await db_util.dbRun(myQuery)).data
@@ -54,11 +54,54 @@ _getLastAnalyticals = async (limit) => {
     return last
 },
 
+saveWallet = async(wallet_name) => {
+    wallet = (await db_util.dbGet('billetera','nombre',wallet_name)).data
+    if(!wallet.length){
+        await db_util.dbInsert('billetera','nombre',wallet_name)
+        return {statuts: 'success'}
+    }
+    return {status: 'error',msg: 'La billetera ya existe'}
+},
+
+getWalletBalance = async(id_wallet,fecha) => {
+    let myQuery = `select sum(cantidad*precio) as "saldo",bf.id_billetera as "billetera",a.fecha
+    from billetera_fondo as bf join analitica as a on bf.ticker = a.ticker
+    where a.fecha = '${fecha}' and bf.id_billetera = '${id_wallet}'`
+    return await db_util.dbRun(myQuery)
+},
+
+getPreviousWalletBalance = async(id,fecha) => {
+    let myQuery = `SELECT sum(cantidad*precio) as "saldo",bf.id_billetera as "billetera",a.fecha from (select fecha,bf.id_billetera
+        from billetera_fondo as bf join analitica as a on bf.ticker = a.ticker where a.fecha < '${fecha}' and bf.id_billetera = '${id}'
+        group by fecha order by fecha desc limit 1) as 'lp' join  billetera_fondo as bf on lp.id_billetera = bf.id_billetera 
+        join analitica as a on bf.ticker = a.ticker
+        where a.fecha = lp.fecha`
+    return await db_util.dbRun(myQuery)
+},
+
+getTicker = async(id) => {
+    let myQuery = `select ticker from billetera_fondo where id_billetera = ${id}`
+    return await db_util.dbRun(myQuery)
+},
+
+getLastPerfomance = async(id) => {
+    let myQuery = `select id_billetera,a.fecha as "ultima_analitica" from billetera_fondo as bf join analitica as a on bf.ticker = a.ticker
+    where bf.id_billetera = '${id}' order by fecha desc limit 1`
+    perfomance = await db_util.dbRun(myQuery)
+    perfomance.data = perfomance.data[0]
+    return perfomance
+}
+
 
 module.exports = {
     get,
     getDetails,
     getDailyPerfomance,
     getWalletDatailByDate,
-    getRangeDate
+    getRangeDate,
+    getWalletBalance,
+    getPreviousWalletBalance,
+    getTicker,
+    getLastPerfomance,
+    saveWallet,
 }

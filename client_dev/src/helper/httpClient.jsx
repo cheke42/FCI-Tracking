@@ -2,7 +2,7 @@
 const api = process.env.REACT_APP_EXPRESS_API;
 const 
 _fetch = async(endpoint,method = 'get',body) => {
-    console.log(`Petición realizada: ${api+endpoint}`)
+    //console.log(`Petición realizada: ${api+endpoint}`)
     let 
     _body = body ? JSON.stringify(body) : null,
     _header = { 'Accept': 'application/json','Content-Type': 'application/json'},

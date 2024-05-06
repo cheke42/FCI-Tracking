@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { Container,Row,Col, Card } from "react-bootstrap";
+import { Container,Row,Col, Card,Button } from "react-bootstrap";
 import { DetailWalletFooter } from './DetailWalletFooter';
+import { FaCirclePlus } from "react-icons/fa6";
 import { _fetch } from '../../helper/httpClient';
+import { ModalAddWallet } from "./ModalAddWallet";
 
 export function WalletsList(){
     
@@ -10,7 +12,8 @@ export function WalletsList(){
     
     //-> STATES
     [walletList, setWalletList] = useState([]),
-    [isLoading, setIsLoading] = useState(true);
+    [isLoading, setIsLoading] = useState(true),
+    [showAddModal,setShowAddModal] = useState(false);
     
     //-> EFFECTS
     useEffect(() => {
@@ -24,12 +27,24 @@ export function WalletsList(){
         setIsLoading(false)
     }
 
+    //-> HANDLER
+    const 
+    handlerNewWallet = () => {
+        setShowAddModal(true)
+    }
+
     return (
-        <Container>
+        <>
+            <Container>
+            <h1 className="text-center mt-3 mb-5">Billeteras</h1>
             <Row>
-                <h1 className="text-center mt-3 mb-5">Billeteras</h1>
+                <Col className="text-end">
+                    <Button variant="dark" onClick={handlerNewWallet}><FaCirclePlus /> Nueva Billetera</Button>
+                </Col>
+            </Row>
+            <Row>
                 {!isLoading && walletList.map((wallet) => (
-                    <Col key={`col-wallet-${wallet.id}`}>
+                    <Col xxl={4} xl={4} lg={6} md={12} key={`col-wallet-${wallet.id}`}>
                         <Card className="mt-2 bg-light" key={`wallet-${wallet.id}`}>
                             <Card.Body >
                                 <Card.Title className="fs-1 text-center">{wallet.nombre}</Card.Title>
@@ -40,6 +55,9 @@ export function WalletsList(){
                     </Col>
                 ))}
             </Row>
-        </Container>
+            </Container>
+            <ModalAddWallet show={showAddModal} setShowModal={setShowAddModal} updateWallets={asyncGetWalletsList}/>
+        </>
+
     )
 }

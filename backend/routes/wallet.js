@@ -5,16 +5,24 @@
 
 const 
 express = require('express'), // Load express
-WalletController = require('../controllers/wallet'), // Load Controller
+walletController = require('../controllers/wallet'), // Load Controller
 md_auth = require('../middlewares/authenticated')
 api = express.Router(); // Express Router
 
 
 // Routes:
-api.get('/:id_wallet?', md_auth.ensureAuth, WalletController.get)
-api.get('/detail/:id_wallet?', md_auth.ensureAuth, WalletController.getDetails)
-api.get('/daily_perfomance/:id_wallet/:fecha', md_auth.ensureAuth, WalletController.getDailyPerfomance)
-api.get('/previous_detail/:id/:fecha',WalletController.getDateByDate)
-api.get('/detail_between/:id/:limit',WalletController.getRangeDate)
+// GET:
+api.get('/:id_wallet?', md_auth.ensureAuth, walletController.get)
+api.get('/detail/:id_wallet?', md_auth.ensureAuth, walletController.getDetails)
+api.get('/daily_perfomance/:id_wallet/:fecha', md_auth.ensureAuth, walletController.getDailyPerfomance)
+api.get('/previous_detail/:id/:fecha',walletController.getDateByDate)
+api.get('/detail_between/:id/:limit',walletController.getRangeDate)
+api.get('/balance/:id/:fecha',walletController.getBalance)
+api.get('/previous_balance/:id/:fecha',walletController.getPreviousBalance)
+api.get('/ticker/:id',walletController.getTicker)
+api.get('/last_perfomance/:id',walletController.getLastPerfomance)
+
+// POST:
+api.post('/save',walletController.saveWallet)
 
 module.exports = api;
